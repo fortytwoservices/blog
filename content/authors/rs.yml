@@ -1,0 +1,14 @@
+- id: robstr
+  name: Roberth Strand
+  initial: RS
+  bio: |
+    Self-proclaimed cloud automator and platform builder.
+    Microsoft MVP, HashiCorp Ambassador, and very active Open Source enthusiast.
+  joined: November 2022
+  avatar: ./avatars/ted.jpg
+  sns:
+    - [twitter, roberthtweets]
+    - [github, roberthstrand]
+    - [medium, "@robstr"]
+    - [mailto, mailto:roberth.strand@amesto.no]
+    - [url, https://robstr.dev]

@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "name": "www",
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "gatsby build --prefix-paths",
+    "develop": "gatsby develop",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  },
+  "dependencies": {
+    "@pitayan/gatsby-theme-pitayan": "^0.4.3",
+    "@raae/gatsby-remark-oembed": "^0.3.1",
+    "gatsby": "^4.12.1",
+    "gatsby-plugin-feed": "^4.11.1",
+    "gatsby-plugin-sitemap": "^5.11.1",
+    "gatsby-remark-responsive-iframe": "^5.11.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "postcss": "^8.4.12",
+    "postcss-import": "^14.1.0",
+    "postcss-nested": "^5.0.6",
+    "tailwindcss": "^3.0.23"
+  }
+}
