@@ -24,7 +24,7 @@ module.exports = {
       {
         name: "About Fortytwo",
         url: "https://www.amestofortytwo.com",
-        group: "site,home",
+        group: "home",
         internal: true,
       },
       {
