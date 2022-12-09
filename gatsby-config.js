@@ -3,11 +3,11 @@ const path = require("path")
 module.exports = {
   pathPrefix: `/blog`,
   siteMetadata: {
-    title: `Amesto Fortytwo`,
-    name: `Fortytwo blog`,
-    description:"THE ANSWER IS MEANINGLESS - unless you understand the question.",
+    title: `Amesto Fortytwo Blog`,
+    name: `Fortytwo`,
+    description:"The answer is meaningsless - unless you understand the question.",
     siteUrl: `https://amestofortytwo.github.io/blog`,
-    siteSlogan: `THE ANSWER IS MEANINGLESS - unless you understand the question.`,
+    siteSlogan: `The answer is meaningsless - unless you understand the question.`,
     siteLinks: [
       {
         name: "sitemap",
@@ -22,7 +22,7 @@ module.exports = {
         internal: true,
       },
       {
-        name: "about",
+        name: "About Fortytwo",
         url: "/about",
         group: "site,home",
         internal: true,
