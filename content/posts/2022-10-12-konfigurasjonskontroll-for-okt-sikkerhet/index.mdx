@@ -1,0 +1,51 @@
+---
+title: Konfigurasjonskontroll for økt sikkerhet i skyløsninger
+author:
+  - Kjetil Stubbom Hansen
+date: 2022-10-12
+categories:
+  - cyber security
+  - sentinel
+description: Vi lever i en usikker tid. 
+  Det er krig i Europa. 
+  Nasjonal Sikkerhetsmyndighet (NSM) ber norske virksomheter være ekstra årvåkne. 
+  Og Uber ble utsatt for datainnbrudd.  
+hero: images/splash.png
+slug: konfigurasjonskontroll-for-okt-sikkerhet
+---
+
+# Konfigurasjonskontroll for økt sikkerhet i skyløsninger
+
+Vi lever i en usikker tid. 
+Det er krig i Europa. 
+Nasjonal Sikkerhetsmyndighet (NSM) ber norske virksomheter være ekstra årvåkne. 
+Og Uber ble utsatt for datainnbrudd.  
+
+Den nasjonale sikkerhetsmåneden er et flott tiltak fra NSM, hvor fokuset i år er på løsepengevirus og ulike former for sosial manipulering, som eksempelvis phishing.
+
+Datainnbruddet hos Uber er et godt eksempel på hvor lite som skal til for at en angriper med onde hensikter kan klare å komme seg på innsiden av en virksomhet, og derfra tilegne seg rettigheter og tilgang til sentrale systemer og sensitiv informasjon.
+
+Hos Uber sviktet det på mange punkter, og det er dessverre ikke unikt. De færreste virksomheter har systemer og prosesser som er i stand til å fange opp alle svake punkter i systemene og på tvers av teknologi og menneskelige faktorer. Det er gjerne sistnevnte som er vanskeligst å ha kontroll på. Som med mye annet handler dette også om prioriteringer, fokus og kontinuitet over tid.
+
+Den teknologiske siden er enklere å kontrollere, men det er mange som kjenner på usikkerhet knyttet til konfigurasjonskontroll og stadig flere innstillingsmuligheter. Særlig innstillinger som ikke er åpenbart tilgjengelig, og krever inngående kunnskap om produktene man benytter i dagens komplekse IT-landskap.
+
+De fleste norske bedrifter baserer mye av sin virksomhet i større eller mindre grad på Microsoft 365. Noen har et veloverveid forhold til lisensene de har, og hvordan de kan utnytte funksjonaliteten de dekker til å sikre seg best mulig. Andre, derimot, har i mindre grad anledning til å sette seg inn i dette. Det er en krevende øvelse å holde kontroll på konfigurasjonene for alle modulene i denne tjenesten. Selv om Microsoft gjør en god jobb med å møte sikkerhetsutfordringene med tjenestene sine er det fortsatt mye som må justeres på fra tid til annen for å optimalisere sikkerheten i Microsoft 365 og de tilhørende løsningene.
+
+Et mye diskutert og fortsatt viktig tema er multifaktorautentisering (MFA). Spesielt aktuelt er temaet i forbindelse med datainnbruddet hos Uber nylig, der en angriper hadde fått tilgang til et passord via de mørkere delene av internett. Dette passordet ble brukt til å spamme brukeren med MFA-forespørsler, samtidig som brukeren ble kontaktet via sosiale medier, forkledd som IT-avdelingen, med beskjed om å godkjenne forespørselen de sendte ham.
+
+Dette er noe forenklet, men sannsynligvis kunne dette vært unngått om Uber hadde benyttet en eller flere av følgende funksjoner:
+
+- Azure AD Identity Protection for å avdekke unormale påloggingsmønstre
+- Den nye Require authentication strength-mekanismen i Conditional Access for å tvinge frem sikrere krav til type MFA, eksempelvis Number Matching.
+- Microsoft Sentinel for overvåking av antall MFA-forespørsler per bruker
+
+Det er vanskelig å sikre seg fullstendig mot dagens trusselbilde, men det finnes stadig bedre løsninger og metoder som kan sikre en virksomhet mot angrep og datainnbrudd. Nøkkelen ligger i god grunnleggende sikkerhetshygiene kombinert med bruk av ny funksjonalitet der dette kreves for å holde tritt med de ondsinnede aktørene.
+
+## Relevante sikringstiltak oppsummert
+Identity Protection er en funksjon fra Microsoft som gjennom ulike teknikker kan automatisere overvåking og iverksette tiltak mot angrep knyttet til brukerkontoer.
+
+Require authentication strength-funksjonen i Conditional Access er en funksjon som foreløpig er i Public Preview. Den åpner for muligheten til å kontrollere hvilken type MFA som skal benyttes i ulike situasjoner.
+
+Number Matching er en passordløs innloggingsfunksjon fra Microsoft som endrer prosessen ved multifaktorautentisering gjennom Authenticator-appen, der brukeren må skrive inn en tosifret kode for å bekrefte identiteten sin, fremfor å bare godkjenne en push-melding på telefonen. Som et enda sterkere tiltak kan man vurdere det som omtales som «phishing-resistant MFA», basert på sertifikater, fysiske sikkerhetsnøkler eller ansiktsgjenkjenning.
+
+Som en forlengelse av dette kan man med fordel benytte Microsoft Sentinel for å lage spørringer som kjøres regelmessig eller i nær sanntid for å detektere endringer på brukerkontoer eller MFA-oppsett i tenanten, samt varsle dersom en bruker får unormalt mange MFA-forespørsler innenfor et kort tidsrom. Spesielt bør man være oppmerksom på endringer av privilegerte tilganger, være seg admin-kontoer så vel som tjenestekontoer og lignende.

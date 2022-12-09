@@ -1,0 +1,13 @@
+- id: kjetilhansen
+  name: Kjetil Stubbom Hansen
+  initial: KSH
+  bio: |
+    Senior Cloud Engineer, Amesto Fortytwo
+  joined: Juli 2022
+  avatar: ./avatars/kjetil.jpg
+  sns:
+    - [twitter, xx]
+    - [github, xx]
+    - [medium, "@xx"]
+    - [mailto, mailto:xx@amesto.no]
+    - [url, https://xx]

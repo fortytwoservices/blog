@@ -22,7 +22,7 @@ module.exports = {
         internal: true,
       },
       {
-        name: "About Fortytwo",
+        name: "To amestofortytwo.com",
         url: "https://www.amestofortytwo.com",
         group: "home",
         internal: true,
