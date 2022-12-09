@@ -4,4 +4,4 @@ This package contains a simple implementation of the plugin package `@pitayan/ga
 
 ## Disclaimer
 
-All image resources are downloaded from [Unsplash](https://unsplash.com/) under [Unsplash license](https://unsplash.com/license).
+All image resources are downloaded from [Unsplash](https://unsplash.com/) under [Unsplash license](https://unsplash.com/license)
