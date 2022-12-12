@@ -1,0 +1,11 @@
+- id: adriankydlandskaftun
+  name: Adrian Kydland Skaftun
+  initial: AKS
+  bio: |
+    Cyber security engineer
+  joined: August 2022
+  avatar: ./avatars/adrian.jpg
+  sns:
+    - [linkedin, https://www.linkedin.com/in/akskaftun/]
+    - [github, https://github.com/bittib010]
+    - [mailto, mailto:adrian.skaftun@amesto.no]
