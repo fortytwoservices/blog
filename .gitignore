@@ -69,3 +69,4 @@ yarn.lock
 
 .parcel-cache
 yarn.lock
+package-lock.json
