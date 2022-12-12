@@ -1,0 +1,203 @@
+---
+title: Kusto Detective - Detective 3 - Ready to play?
+author:
+  - Adrian Kydland Skaftun
+date: 2022-12-11
+categories:
+  - KQL
+  - Azure Data Explorer
+  - Data Science
+description: Walkthrough of Kusto Detective Agency series
+hero: images/badge.png
+slug: kusto-detective-agency5
+---
+# Kusto Detective - Detective 3 - Ready to play?
+## Introduction
+For this challenge, we are not provided much details as of yet. No story other than some theory on special prime numbers. Where will this take us? I personally love these kind of challenges, where the opening is wide open, yet pretty narrow.
+
+# The story
+![](media/20221121134342.png)  
+
+This is the initial story - but we will add to it as this challenge is widening out as we progress. Read through it.
+
+Although the task itself gives you the link for the data to be working with you need to make the ingestion query yourself - unless you do it manually as I provided info on in the first onboarding article of this series. Here is the ingestion query for you to try yourself:
+
+    .execute database script <|
+    .create-merge table Primes (Prime:int)
+    .ingest async into table Primes (@'https://kustodetectiveagency.blob.core.windows.net/prime-numbers/prime-numbers.csv.gz')
+
+
+# The hunt starts!
+So, what we have until now is the link to geeks for geeks where we learn about special prime numbers and the limits are set to the addition of two neighbouring primes + 1.
+
+$(p1 + p2 + 1)$
+
+Let's start with this. The way I wanted to achieve this was to join the Primes table on the table itself, but shifting it by one row, before adding columns together plus 1. I googled myself to pieces on this one - until i thought logicaly on it - i just need to get a glimpse of the next number in line. There is my keyword: **next**. To use `next()` we also need `serialize` and `extend`. `serialize` - "This operator "freezes" the order of rows in an arbitrary manner." ([Window functions](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/windowsfunctions#serialized-row-set)). Remember that order is key here, because we need the nearest neighbouring number. `extend` adds a column to the current table and is able to do calculation as we need.
+
+### Hint 1
+![](media/20221121210835.png)  
+This gives us little, except knowing that we were on to the correct solution.
+
+```sql
+Primes
+| serialize 
+| join Primes on Prime 
+    | serialize
+    | extend nextPrime = next(Prime)
+| extend result = nextPrime + Prime + 1
+| join kind=inner Primes on $left.result == $right.Prime
+| summarize maxPri = max(result)
+| project TheAnswer=strcat("https://aka.ms/", maxPri)
+```
+
+Firstly, we ask for serialized data from Primes, before we ask for it one more time where we join those two together and extend the last table to output the `next()` value (shifting it once). Now, we have two columns where one row contains a `Prime` number and the other has the neighbouring `nextPrime` number. Next, we extend it once more to add another column that does the calculation according to the formula above. Then we join that `result` on `Prime`. The syntax here might be confusing. Isn't `inner` default? 
+
+In many other languages it might be, in KQL `innerunique` is the default. And the difference is that inner returns all the matches from both sides and `innerunique` returns a row for each match of the left row with rows from the right (meaning that there are duplicate values for the left). We want `inner` as you can see and we can specify which columns by the syntax provided at the end of the `join` line. Last up, we should only get the highest number (`max()`) and a neat little trick to apply that number to the URL provided in the challenge text with `strcat()` which concatenates strings.
+
+Go to the link. Then we are prompted with a raw text:
+
+```sql
+    Well done, my friend.
+    It's time to meet. Let's go for a virtual sTREEt tour...
+    Across the Big Apple city, there is a special place with Turkish Hazelnut and four Schubert Chokecherries within 66-meters radius area.
+    Go 'out' and look for me there, near the smallest American Linden tree (within the same area).
+    Find me and the bottom line: my key message to you.
+
+    Cheers,
+    El Puente.
+
+    PS: You know what to do with the following:
+
+    ----------------------------------------------------------------------------------------------
+
+    .execute database script <|
+    // The data below is from https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/uvpi-gqnh 
+    // The size of the tree can be derived using 'tree_dbh' (tree diameter) column.
+    .create-merge table nyc_trees 
+        (tree_id:int, block_id:int, created_at:datetime, tree_dbh:int, stump_diam:int, 
+    curb_loc:string, status:string, health:string, spc_latin:string, spc_common:string, steward:string,
+    guards:string, sidewalk:string, user_type:string, problems:string, root_stone:string, root_grate:string,
+    root_other:string, trunk_wire:string, trnk_light:string, trnk_other:string, brch_light:string, brch_shoe:string,
+    brch_other:string, address:string, postcode:int, zip_city:string, community_board:int, borocode:int, borough:string,
+    cncldist:int, st_assem:int, st_senate:int, nta:string, nta_name:string, boro_ct:string, ['state']:string,
+    latitude:real, longitude:real, x_sp:real, y_sp:real, council_district:int, census_tract:int, ['bin']:int, bbl:long)
+    with (docstring = "2015 NYC Tree Census")
+    .ingest async into table nyc_trees ('https://kustodetectiveagency.blob.core.windows.net/el-puente/1.csv.gz')
+    .ingest async into table nyc_trees ('https://kustodetectiveagency.blob.core.windows.net/el-puente/2.csv.gz')
+    .ingest async into table nyc_trees ('https://kustodetectiveagency.blob.core.windows.net/el-puente/3.csv.gz')
+    // Get a virtual tour link with Latitude/Longitude coordinates
+    .create-or-alter function with (docstring = "Virtual tour starts here", skipvalidation = "true") VirtualTourLink(lat:real, lon:real) { 
+        print Link=strcat('https://www.google.com/maps/@', lat, ',', lon, ',4a,75y,32.0h,79.0t/data=!3m7!1e1!3m5!1s-1P!2e0!5s20191101T000000!7i16384!8i8192')
+    }
+    // Decrypt message helper function. Usage: print Message=Decrypt(message, key)
+    .create-or-alter function with 
+    (docstring = "Use this function to decrypt messages")
+    Decrypt(_message:string, _key:string) { 
+        let S = (_key:string) {let r = array_concat(range(48, 57, 1), range(65, 92, 1), range(97, 122, 1)); 
+        toscalar(print l=r, key=to_utf8(hash_sha256(_key)) | mv-expand l to typeof(int), key to typeof(int) | order by key asc | summarize make_string(make_list(l)))};
+        let cypher1 = S(tolower(_key)); let cypher2 = S(toupper(_key)); coalesce(base64_decode_tostring(translate(cypher1, cypher2, _message)), "Failure: wrong key")
+    }
+```
+
+Ingest the whole raw message above into ADX. To keep this article a bit short based on the task length, I'm not going into to much detail as we're moving forward. You should have created a function that appears in the left pane on ADX by the ingestion. If you haven't, do it now as we need those functions to move forward. It will look something like this:
+![](media/20221123091359.png)  
+
+
+
+## Hint 2
+![](media/20221121210934.png)  
+This is interesting. KQL is actually able to work with geo-data. Amazing! What does it do actually?
+
+Lets dig in. It ["Calculates the H3 Cell token string value for a geographic location."](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/geo-point-to-h3cell-function). What is a H3 Cell token? It is a spatial grid system for geo location where the grid basically consist of hexagons (the "H" in H3). Why hexagons? Because hexagons share the same distance to all of its closest neighbours and they have the highest number of neighbours if you were to calculate only neighbours where there is an edge-share. 
+
+Subdivision is also key to this system, where squares are able to subdivide perfectly, hexagons are not. But the system Uber made, they subdivide one hexagon into 7 and rotate them slightly. This way they are able to map out large areas in only a handfull of hexagon shapes and also to make the shapes fit into most kind of lansdscape shapes. Read more on this topic [here](https://www.uber.com/en-NO/blog/h3/), where distortion is also (the most important) part of their solution.
+
+To use this function we then need to convert the longitude and latitude to H3 values, with a cell size of 10 which is aproximate 66m as the hint states. 
+
+```sql
+let h3Tree = nyc_trees
+| extend  h3Cell=geo_point_to_h3cell(longitude, latitude, 10);
+```
+
+Next up we need to
+- minimize the output by `project`
+- Filter on where we have the correct amount of trees and species
+- and correlate these findings to make them grouped into a radius of 66 meters
+
+First and foremost I think this is most suited to put into a variable that we later can call upon. Take a look at this:
+
+```sql
+let cells = h3Tree
+| where spc_common has_any ("Schubert", "Turkish", "American")
+| project h3Cell, spc_common
+| evaluate pivot(spc_common): (h3Cell:string , ["'Schubert' chokecherry"]:int, ["Turkish hazelnut"]:int, ["American linden"]:int)
+| where ["'Schubert' chokecherry"] == 4 and ["Turkish hazelnut"] > 0 and ["American linden"] > 0;
+```
+
+Most of these keywords should be familiar to you by now. The only interesting part that is has not been used earlier is the `pivot()` and the string syntax in the where clause. `evaluate pivot()` takes a column you provide and creates a new row for each match of the pivot column. 
+
+Microsoft has this explanation: `pivot()` [rotates a table by turning the unique values from one column in the input table into multiple columns in the output table and performs aggregations as required on any remaining column values that will appear in the final output.](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/pivotplugin). Which means that for every species we will add a new column and add the data count the matches residing in the same `h3Cell` - 66 meter radius. 
+
+We are also limiting output by using a query-defined output schema (a fancy `project`-like function), which you can read more on in the link above. Now, the syntax on the columns are used whenever we have a string with spaces in it - enclose it in square brackets and quotes. [Read more here](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/schema-entities/entity-names). Now we're good to go:
+    
+```sql
+h3Tree
+| join kind=inner cells on h3Cell
+| where spc_common == "American linden"
+| summarize arg_min(tree_dbh, *)
+| project latitude, longitude
+```
+
+### The whole query
+Enter the link as created by this query:
+
+```sql
+let h3Tree = nyc_trees
+| extend  h3Cell=geo_point_to_h3cell(longitude, latitude, 10);
+let cells = h3Tree
+| where spc_common has_any ("Schubert", "Turkish", "American")
+| project h3Cell, spc_common
+| evaluate pivot(spc_common): (h3Cell:string , ["'Schubert' chokecherry"]:int, ["Turkish hazelnut"]:int, ["American linden"]:int)
+| where ["'Schubert' chokecherry"] == 4 and ["Turkish hazelnut"] > 0 and ["American linden"] > 0;
+h3Tree
+| join kind=inner cells on h3Cell
+| where spc_common == "American linden"
+| summarize arg_min(tree_dbh, *)
+| project latitude, longitude
+```
+
+Now that we have the correct latitude and longitude - let's throw them into the function that was part of the raw text we found:
+
+```sql
+VirtualTourLink(40.71222313, -73.96452201)
+```
+
+## Hint 3
+![](media/20221121211029.png)  
+
+Walking around in the (Google)street, try looking for a tree and try looking for a message close by a tree. This actually took me ages - but I noticed that I had been on the verge of finding the answer many times. I went back and read the challenge text on the kusto site. The message was sent from "El Puento". I KNEW I had read that somewhere in the streets. And finally i found it:
+
+![](media/20221121210500.png)  
+![](media/20221121210610.png)  
+
+We are looking for text to use in our decrypt function (part of the raw text we ingested). Lets try out the text below it as that is the only readable part of the message besides "El Puente" - "ASHES to ASHES". 
+
+The `Decrypt` function we ingested earlier is now going to be used, but it does not contain a print function, therefore, we need those in sequence with the message from the detective dashboard.
+
+```sql
+print Decrypt(@"20INznpGzmkmK2NlZ0JILtO4OoYhOoYUB0OrOoTl5mJ3KgXrB0[8LTSSXUYhzUY8vmkyKUYevUYrDgYNK07yaf7soC3kKgMlOtHkLt[kZEclBtkyOoYwvtJGK2YevUY[v65iLtkeLEOhvtNlBtpizoY[v65yLdOkLEOhvtNlDn5lB07lOtJIDmllzmJ4vf7soCpiLdYIK0[eK27soleqO6keDpYp2CeH5d\F\fN6aQT6aQL[aQcUaQc[aQ57aQ5[aQDG", "ASHES to ASHES")
+```
+
+To get this query to run through, we added the use of verbatim string. What is that? As you can see, the encrypted string contains special characters which needs to either be escaped by putting a backslash in front, OR by adding a `@` in front of the quote that starts the string.
+
+After running the query above, we recieve a message through the decryption algorithm/function:
+
+    Impressive, you got it right! Something BIG is going to happen...
+    Keep the next hint close to you, it will help you. We will be in touch soon.
+    El Puente.
+
+    wytaPUJM!PS:2,7,17,29,42,49,58,59,63
+
+# Badge-time
+![](media/20221123104605.png)  
+Good job! Did you learn anything new? Please let me know, I'd love to hear about it.
