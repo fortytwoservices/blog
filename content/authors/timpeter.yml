@@ -1,0 +1,9 @@
+- id: timpeteredstrom
+  name: Tim Peter Edstrom
+  initial: TPE
+  bio: |
+    Principal Cloud Engineer, Amesto Fortytwo
+  joined: March 2022
+  avatar: ./avatars/timpeter.png
+  sns:
+      - [twitter, roberthtweets]
