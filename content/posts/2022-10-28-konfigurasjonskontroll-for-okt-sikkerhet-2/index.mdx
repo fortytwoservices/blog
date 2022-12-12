@@ -1,0 +1,27 @@
+---
+title: Konfigurasjonskontroll for økt sikkerhet i skyløsninger – del 2
+author:
+  - Kjetil Stubbom Hansen
+date: 2022-10-28
+categories:
+  - Cyber Security
+  - Sentinel
+description: Tidligere i sikkerhetsmåneden skrev jeg en sak som tok for seg utfordringer med konfigurasjonskontroll, sett i sammenheng med angrepet Uber ble utsatt for, med noen tips om hvordan man kan beskytte seg bedre mot denne type angrep.
+hero: images/splash.png
+slug: konfigurasjonskontroll-for-okt-sikkerhet-del2
+---
+
+# Konfigurasjonskontroll for økt sikkerhet i skyløsninger – del 2
+
+Tidligere i sikkerhetsmåneden skrev jeg en sak som tok for seg utfordringer med konfigurasjonskontroll, sett i sammenheng med angrepet Uber ble utsatt for, med noen tips om hvordan man kan beskytte seg bedre mot denne type angrep. Her var fokuset funksjonalitet for sikring av brukernes identitet og Multifaktor Autentisering (MFA) som en viktig del av dette.
+
+Dette er kun ett av mange eksempler på teknologi som stadig er under utvikling med tilhørende konfigurasjon man bør ha kontroll på for å sørge for best mulig beskyttelse mot ondsinnede aktører. Jeg vil her ta for meg tre andre eksempler på funksjonalitet som fort kan gå i glemmeboka eller som krever konfigurasjon utover standard oppsett fra Microsoft:
+
+## FUNKSJONALITET SOM KREVER EKSTRA KONFIGURASJON:
+• Conditional Access er et meget relevant område som krever et aktivt forhold til regelsettet. Et eksempel er å begrense muligheten til å synkronisere filer fra OneDrive for Business og Sharepoint slik at dette kun tillates for godkjente enheter. 
+
+• App Permission Policies for å begrense hvilke apper som tillates i Teams og på den måten forhindre tilsiktet eller utilsiktet datalekkasje. 
+
+• List Azure AD Role Assignments for å sikre at privilegerte brukerkontoer er cloud-only og dermed separert fra lokalt domene for å redusere risikoen fra kompromitterte kontoer.
+
+For å hjelpe kundene med dette har vi i Amesto Fortywo laget en tjeneste vi kaller Managed Security Posture, der modulen med fokus på Microsoft 365 konfigurasjonskontroll er relevant for utfordringene nevnt i denne artikkelen. Se gjerne nærmere på produktsiden for mer informasjon eller ta kontakt for å få vite mer om hvordan Amesto Fortytwo kan bidra med å øke trygghet gjennom konfigurasjonskontroll basert på erfaring og beste praksis.
