@@ -1,0 +1,13 @@
+- id: mariussolbakkenmellum
+  name: Marius Solbakken Mellum
+  initial: MSM
+  bio: |
+    Principal Cloud Engineer
+  joined: August 2022
+  avatar: ./avatars/marius.jpeg
+  sns:
+    - [twitter, mariussmellum]
+    - [linkedin, https://www.linkedin.com/in/mariussm/]
+    - [github, https://github.com/mariussm]
+    - [mailto, mailto:marius.solbakken@amesto.no]
+    - [url, https://goodworkaround.com]
