@@ -6,7 +6,7 @@ module.exports = {
     title: `Amesto Fortytwo Blog`,
     name: `Fortytwo`,
     description:"The answer is meaningsless - unless you understand the question.",
-    siteUrl: `https://amestofortytwo.github.io/blog`,
+    siteUrl: `https://blog.amestofortytwo.com`,
     siteSlogan: `The answer is meaningsless - unless you understand the question.`,
     siteLinks: [
       {
