@@ -1,0 +1,9 @@
+- id: bendikaarvik
+  name: Bendik Aarvik
+  initial: BA
+  bio: |
+    Cloud Engineer, Amesto Fortytwo
+  joined: September 2019
+  avatar: ./avatars/bendik.jpg
+  sns:
+    - [linkedin, https://www.linkedin.com/in/bendik-aarvik/]
