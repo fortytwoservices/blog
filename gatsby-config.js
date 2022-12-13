@@ -125,7 +125,7 @@ module.exports = {
       resolve: `@pitayan/gatsby-theme-pitayan`,
       options: {
         siteAssets: "src/assets",
-        postsPerPage: 6,
+        postsPerPage: 15,
         mailChimpEndpoint:
           "https://pitayanblog.us14.list-manage.com/subscribe/post?u=234bf6777b76872feb7d92a68&amp;id=27fad95f3b",
         mailChimpTimeout: 3500,

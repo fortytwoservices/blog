@@ -1,0 +1,12 @@
+- id: alexanderrodland
+  name: Alexander Solaat Rodland
+  initial: ASR
+  bio: |
+    Microsoft MVP and Principal Cloud Engineer
+  joined: September 2022
+  avatar: ./avatars/alexanderrodland.png
+  sns:
+    - [twitter, alexsolaat]
+    - [linkedin, https://www.linkedin.com/in/alexsolaat]
+    - [mailto, mailto:alexander.rodland@amesto.no]
+    - [url, https://solaat.no]
