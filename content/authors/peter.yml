@@ -1,0 +1,9 @@
+- id: peterpran
+  name: Peter Pran
+  initial: PP
+  bio: |
+    Director, Amesto Fortytwo
+  joined: October 2017
+  avatar: ./avatars/peter.jpg
+  sns:
+    - [linkedin, https://www.linkedin.com/in/peterjpran/]
