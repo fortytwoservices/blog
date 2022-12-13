@@ -1,7 +1,3 @@
-# The example
+# Amesto Fortytwo blog
 
-This package contains a simple implementation of the plugin package `@pitayan/gatsby-theme-pitayan`.
-
-## Disclaimer
-
-All image resources are downloaded from [Unsplash](https://unsplash.com/) under [Unsplash license](https://unsplash.com/license)
+This is the repository for the [Fortytwo blog](https://blog.amestofortytwo.com).
