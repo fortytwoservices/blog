@@ -1,0 +1,11 @@
+- id: remivandemir
+  name: Remi Vandemir
+  initial: RV
+  bio: |
+    Partner and Director, Amesto Fortytwo
+  joined: February 2022
+  avatar: ./avatars/remi.jpeg
+  sns:
+    - [linkedin, https://www.linkedin.com/in/remivandemir/]
+    - [github, https://github.com/remiks]
+    - [mailto, mailto:remi.vandemir@amesto.no]
