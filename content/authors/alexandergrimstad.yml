@@ -1,0 +1,11 @@
+- id: alexandergrimstad
+  name: Alexander Grimstad
+  initial: AG
+  bio: |
+    Principal Cloud Engineer
+  joined: December 2022
+  avatar: ./avatars/alexandergrimstad.jpg
+  sns:
+    - [linkedin, https://www.linkedin.com/in/alexander-grimstad]
+    - [github, https://github.com/alegri90]
+    - [mailto, mailto:alexander.grimstad@amesto.no]
