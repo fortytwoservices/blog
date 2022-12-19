@@ -25,13 +25,13 @@ module.exports = {
         name: "Amestofortytwo.com",
         url: "https://www.amestofortytwo.com",
         group: "home",
-        internal: true,
+        internal: false,
       },
       {
         name: "Merchandise shop",
         url: "https://fortytwoshop.no",
         group: "home",
-        internal: true,
+        internal: false,
       },
       {
         name: "email",
