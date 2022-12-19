@@ -22,8 +22,14 @@ module.exports = {
         internal: true,
       },
       {
-        name: "To amestofortytwo.com",
+        name: "Amestofortytwo.com",
         url: "https://www.amestofortytwo.com",
+        group: "home",
+        internal: true,
+      },
+      {
+        name: "Merchandise shop",
+        url: "https://fortytwoshop.no",
         group: "home",
         internal: true,
       },
