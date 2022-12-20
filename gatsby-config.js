@@ -2,7 +2,7 @@ const path = require("path")
 
 module.exports = {
   // pathPrefix: `/`,
-  trailingSlash: "never",
+  trailingSlash: "always",
   siteMetadata: {
     title: `Amesto Fortytwo Blog`,
     name: `Fortytwo`,
