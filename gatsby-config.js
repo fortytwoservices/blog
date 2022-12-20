@@ -150,5 +150,11 @@ module.exports = {
         ],
       },
     },
+    {
+      resolve: `gatsby-plugin-plausible`,
+      options: {
+        domain: `blog.amestofortytwo.com`,
+      },
+    },
   ],
 }
