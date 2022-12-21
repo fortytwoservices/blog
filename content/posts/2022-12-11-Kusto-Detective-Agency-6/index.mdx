@@ -223,10 +223,10 @@ Go to the link: bing.com?q=uncomfortable+%2Belephant+%2Bescapes+%2Bcircus+%2Bbre
 
 Now, two other hints that I used a lot of time to correlate between was the content of the link and how to use it. Reading through the email in the screenshot above gave me some clue. Read the `message-project-x.png` from one of the sneakinto websites. So, we need the date of the Project X image as well.
 
-Now, get the dates of the projext X image, the year of elephant image and plot them into the algorithm:
+Now, get the date of the projext X image (view creation date of the file you downloaded), the year of elephant image and plot them into the algorithm:
 
 ```sql
-print make_datetime(2020, 07, 15) + (1891d % 1000d);
+print make_datetime(2020, 07, 09) + (1891d % 1000d);
 ```
 
 We are using the algorithm inside KQL here. We set the date of the ProjectX in `make_datetime()` and then we add the modulation between the two numbers and set their data types to `d` (days) which makes it able to do calculations on dates/times.
@@ -237,5 +237,11 @@ NOTE! There was some issue with the lat and long input - it had been switched ar
 
 # Badge-time
 ![](media/20221124152050.png)
+
+Want another badge? Plot the answer in once more. As you can see, the checkmark on the inbox message of this task is not checked. Confirm your answer and get a completion badge!
+
+![](media/completionbadge.png)
+
+
 
 Good job Senior Detective! Did you learn anything new? Please let me know, I'd love to hear about it.
