@@ -2,7 +2,7 @@
 title: Kusto Detective - Rookie - The rarest book is missing
 author:
   - Adrian Kydland Skaftun
-date: 2022-12-11
+date: 2022-12-07
 categories:
   - KQL
   - Azure Data Explorer
@@ -84,16 +84,7 @@ Shelves
 | order by difference desc
 ```
 
-Or you can use another type of summarize as I've seen other players had used.:
-```sql
-Shelves 
-| mv-expand rf_id = rf_ids to typeof(string)
-| lookup Books on rf_id 
-| project shelf, author, book_title, total_weight, weight_gram
-| summarize bookWeight = sum(weight_gram) by shelf, total_weight
-| extend difference = (claimedWeight - total_weight)
-| order by difference desc
-```
+This gives us a very interesting shelf number indeed! FortytwoFortytwo!
 
 
 # Badge-time
