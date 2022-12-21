@@ -23,6 +23,12 @@ module.exports = {
         internal: true,
       },
       {
+        name: "analytics",
+        url: "https://plausible.io/blog.amestofortytwo.com/",
+        group: "site",
+        internal: false,
+      },
+      {
         name: "Amestofortytwo.com",
         url: "https://www.amestofortytwo.com",
         group: "home",
