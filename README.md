@@ -22,15 +22,16 @@ This message will show up if you do not do it from the beginning, so let's start
 
 ```
 We'd like to have valid DCO on all commits.
+
 Please fix so that you provide a sign-off on all commits:
+
 - Make sure your version of git is up to date, as there has been noticed some bugs with ssh-signing on older versions of git
 - Add your in your GH-account -> settings -> emails (verify it)
-- Create an ssh key towards your amesto.no email address: ssh-keygen -c "ny.na*rsto.no" -b
+- Create an ssh key towards your amesto.no email address: "ssh-keygen -C "my.name@amesto.no" -b 4096"
 - Place your public key as a Signing Key in GH-account settings -> SSH and GPG keys
-- Update your git config: git config --global gæ.format ssh and git config --global user.signingkey_
-/PATH/TO/
-- when commiting, use the following syntax: git -a -s -S -n "your com:it essage tEre
-- check git to se that it has been signed-off with your amesto.no email account.
+- Update your git config: "git config --global gpg.format ssh" and "git config --global user.signingkey /PATH/TO/.SSH/KEY.PUB"
+- when commiting, use the following syntax: "git -a -s -S -m "your commit message here"
+- check "git log" to se that it has been signed-off with your amesto.no email account.
 ```
 
 ## Adding a profile
