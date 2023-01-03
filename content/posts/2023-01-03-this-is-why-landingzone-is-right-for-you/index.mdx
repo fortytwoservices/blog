@@ -1,0 +1,39 @@
+---
+title: This is why Azure landing zones is right for you
+author:
+  - Hannelen Leirvåg
+date: 2023-01-03
+categories:
+  - Platform Engineering
+  - Azure Landingzone
+  - Microsoft
+description: If you are running anything in Azure, you should consider looking into Azure landing zones. You might not even know it, but trust me, keep reading and I'll explain why.
+hero: media/Dall-e-landingzone.png
+slug: this-is-why-you-need-azurelandingzone
+---
+
+> If you are running anything in Azure, you should consider looking into Azure landing zones.
+You might not even know it, but trust me, keep reading and I'll explain why.
+
+A part of the [Microsoft Cloud Adoption Framework](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/), Azure landing zones provides guidens of how organize your Azure environment and build Azure for scalability, security and governance.
+
+Used together with the Enterprise Scale pattern, it helps you make good design decisions that are less likely to kick your butt down the line.
+
+Each time you deploy a new storage account, key vault or virtual machine, you need to make some choices.
+
+- Which RG should I put it in?
+- Who needs access to this?
+- How long will this resource live?
+- What about encryption or public endpoints?
+
+If what you just read really doesn't say anything meaningful to you, have a look at the following questions:
+
+- Do you struggle to keep tabs on RBAC assignments and who has access to what?
+- Do you suspect you have orphaned resurces just creating cost while not beeing used?
+- Do you ask your team members at least once a week "what is this storage account doing here, does anybody know?"
+- Do you worry about virtual machines with port 3389 open to internet, or public IPs being used where they shouldnt?
+- Do you struggle with not having any diagnostic logs available when troubleshooting issues?
+
+If you can answer **YES** to one or more of these questions, 42 isn't the answer for you.
+
+Azure landing zones is...

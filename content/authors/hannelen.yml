@@ -1,0 +1,11 @@
+- id: hannelen
+  name: Hannelen Leirvåg
+  initial: HL
+  bio: |
+    Senior Cloud Engineer, Amesto Fortytwo
+  joined: June 2022
+  avatar: ./avatars/hannelen.png
+  sns:
+    - [linkedin, https://www.linkedin.com/in/hannelen-leirvåg-7bb9335b/]
+    - [github, https://github.com/hannelan]
+    - [mailto, mailto:hannelen.leirvag@amesto.no]
