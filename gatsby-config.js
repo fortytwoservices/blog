@@ -41,6 +41,12 @@ module.exports = {
         internal: false,
       },
       {
+        name: "Meetup",
+        url: "https://www.meetup.com/amesto-fortytwo/",
+        group: "home",
+        internal: false,
+      },
+      {
         name: "email",
         url: "mailto: hello@amestofortytwo.com",
         group: "connect",
