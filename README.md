@@ -115,5 +115,3 @@ docker run --rm -p 80:80 amestofortytwo/blog
 ```
 
 Once built and started, go to localhost in your browser.
-
-Testing commit
