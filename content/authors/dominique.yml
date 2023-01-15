@@ -1,0 +1,10 @@
+- id: dominique
+  name: Dominique Cid-Strand
+  initial: DCS
+  bio: |
+    Agile Coach, Amesto Fortytwo
+  joined: September 2022
+  avatar: ./avatars/dominique.jpg
+  sns:
+      - [linkedin, https://www.linkedin.com/in/dominiquecid/]
+      - [mailto, mailto:dominique.cid-strand@amesto.no]
