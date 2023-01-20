@@ -22,10 +22,11 @@ This is the initial story - but we will add to it as this challenge is widening 
 
 Although the task itself gives you the link for the data to be working with you need to make the ingestion query yourself - unless you do it manually as I provided info on in the first onboarding article of this series. Here is the ingestion query for you to try yourself:
 
+```sql
     .execute database script <|
     .create-merge table Primes (Prime:int)
     .ingest async into table Primes (@'https://kustodetectiveagency.blob.core.windows.net/prime-numbers/prime-numbers.csv.gz')
-
+```
 
 # The hunt starts!
 So, what we have until now is the link to geeks for geeks where we learn about special prime numbers and the limits are set to the addition of two neighbouring primes + 1.

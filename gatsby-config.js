@@ -47,6 +47,24 @@ module.exports = {
         internal: false,
       },
       {
+        name: "linkedin",
+        url: "https://www.linkedin.com/company/amesto-fortytwo",
+        group: "connect",
+        internal: false,
+      },
+      {
+        name: "twitter",
+        url: "https://twitter.com/AmestoFortytwo",
+        group: "connect",
+        internal: false,
+      },
+      {
+        name: "fortytwo web",
+        url: "https://www.amestofortytwo.com",
+        group: "connect",
+        internal: false,
+      },
+      {
         name: "email",
         url: "mailto: hello@amestofortytwo.com",
         group: "connect",
