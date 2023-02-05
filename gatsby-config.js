@@ -47,6 +47,12 @@ module.exports = {
         internal: false,
       },
       {
+        name: "Our culture",
+        url: "https://github.com/amestofortytwo/culture",
+        group: "home",
+        internal: false,
+      },
+      {
         name: "linkedin",
         url: "https://www.linkedin.com/company/amesto-fortytwo",
         group: "connect",
