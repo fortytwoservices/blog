@@ -115,3 +115,12 @@ docker run --rm -p 80:80 amestofortytwo/blog
 ```
 
 Once built and started, go to localhost in your browser.
+
+## Update routines
+1. Delete /node_modules folder
+2. Delete package-config.js file
+3. Run the following command
+```sh
+npm install --save-dev gatsby @pitayan/gatsby-theme-pitayan react@18 react-dom@18 --legacy-peer-deps
+```
+4. Checkin code and do PR

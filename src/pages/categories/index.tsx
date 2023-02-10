@@ -41,14 +41,12 @@ const CategoriesPage: React.FC<CategoriesProps> = ({
 
 export default memo(CategoriesPage)
 
-export const pageQuery = graphql`
-  query {
-    allMdx(limit: 2000) {
-      group(field: frontmatter___categories) {
-        fieldValue
-        totalCount
-      }
+export const pageQuery = graphql`{
+  allMdx(limit: 2000) {
+    group(field: {frontmatter: {categories: SELECT}}) {
+      fieldValue
       totalCount
     }
+    totalCount
   }
-`
+}`
