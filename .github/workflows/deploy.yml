@@ -1,23 +1,37 @@
-name: Gatsby Publish
+name: Deploy Gatsby
 
 on:
   push:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
-  build:
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
-      - uses: actions/setup-node@v3
-         with:
-           node-version: 18
-           cache: 'npm'
-           cache-dependency-path: package-lock.json
-      - uses: actions/checkout@v1
-      - uses: enriikke/gatsby-gh-pages-action@v2
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
         with:
-          access-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-branch: gh-pages
-          gatsby-args: --prefix-paths
-          skip-publish: true
+          node-version: '18'
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm run build
+      - name: GitHub Pages action
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
