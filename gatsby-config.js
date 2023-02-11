@@ -166,7 +166,7 @@ module.exports = {
             `,
             output: "/rss.xml",
             match: "^/posts/",
-            title: "Pitayan's RSS Feed",
+            title: "Fortytwo RSS Feed",
           },
         ],
       },
