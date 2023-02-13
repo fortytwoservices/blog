@@ -93,28 +93,13 @@ Continue the post by writing regular markdown to your post.
 
 Ready to post? Then you need to do a pull request. Look at the link from beginning of this post to find a solution.
 
-## Local runtime / test container
+## Run this blog locally with devcontainer in vscode
 
-Prerequisites:
+> You need to clone with HTTPS and not ssh, not supported yet.
 
-- Make, if you want to execute the commands via the Makefile
-- Docker to build and run the container
+Click this and run Dev container locally. You need vscode and Docker for desktop installed on your computer.
 
-```sh
-make build start
-```
-
-If you do not have Make and only wish to use Docker; you can run these commands individually.
-
-```sh
-# Build the container
-docker build -t amestofortytwo/blog --force-rm -f ./Dockerfile .
-
-# Start the container
-docker run --rm -p 80:80 amestofortytwo/blog
-```
-
-Once built and started, go to localhost in your browser.
+[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/amestofortytwo/blog)
 
 ## Update routines
 1. Delete /node_modules folder
