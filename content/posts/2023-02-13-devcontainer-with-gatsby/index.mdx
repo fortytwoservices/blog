@@ -7,27 +7,33 @@ categories:
     - vscode
     - Gatsby
     - DevContainer
-description: To be able to serve all our engineer a simple way to update new blogpost on this blog, I wanted to try out Visual Studio Code Dev Containers. This post describe all code and how I did it for this blog.
+description: Visual Studio Code Dev Containers are a great tool for developers to work in a consistent and reliable environment, regardless of their local setup. In this blog post, we will go over how to set up Dev Containers to be used with a Gatsby blog.
 hero: media/DALL·E 2023-02-13 14.40.14 - a stack of containers with different colors.png
 slug: devcontainer-with-vscode
 ---
-# How to setup
 
-To be able to serve all our engineer a simple way to update new blogpost on this Gatsby blog, I wanted to try out [Visual Studio Code Dev Containers]([https://](https://code.visualstudio.com/docs/devcontainers/containers) and I must say. It`s pritty nice!
+# How to setup
+In order to provide a straightforward method for our engineers to add new blog posts to our Gatsby blog (here), I decided to experiment with [Visual Studio Code Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) After trying it out, I can confidently say that it is a fantastic tool!
+
+Visual Studio Code Dev Containers allow developers to work in a fully-featured development environment, regardless of their local setup. This makes it easy for our engineers to update our blog, as they can do so within a consistent and reliable environment.
+
+Overall, I was extremely impressed with the ease of use and functionality of Visual Studio Code Dev Containers. I believe it will be a valuable tool for our team.
 
 Our blog is built on [Gatsby](http://gatsbyjs.com) with [A theme from Pitayan](https://github.com/remiks/gatsby-theme-pitayan)
+
+Let us jump into how I configured this.
 
 ## Pre prerequisites
 
 You need Docker desktop and vscode installed on your system. Follow the quick setup guide [here](https://code.visualstudio.com/docs/devcontainers/tutorial)
 
-## Create folder structure
+## 1. Create folder structure
 
-1. First create a folder named `.devcontainer` in your Gatsby root directory. 
+First create a folder named `.devcontainer` in your Gatsby root directory. 
 
-## Create devcontainer.json
+## 2. Create devcontainer.json
 
-2. Create a new file named `devcontainer.json`
+Create a new file named `devcontainer.json`
 
 This config will also install necessary extensions in your vscode instance to work better with markdown. 
 
@@ -37,32 +43,26 @@ This config will also install necessary extensions in your vscode instance to wo
 {
 	"name": "Fortytwo Blog container",
 	
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	// The image to use for the container, in this case a JavaScript Node environment
 	"image": "mcr.microsoft.com/devcontainers/javascript-node:0-18",
+
+	// A volume mount for the node_modules folder to persist across container restarts
     "mounts": [
 		"source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
 	],
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-
-    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// A list of ports to forward from the container to the host machine
 	"forwardPorts": [
-		// Gatsby server
+		// Port for the Gatsby server
 		8000,
-		// Live reload server
+		// Port for the Live reload server
 		8000
 	],
 
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "yarn install",
+	// A command to run after the container is created
 	"postCreateCommand": "sh .devcontainer/post-create.sh",
 
-	// Configure tool-specific properties.
-	// "customizations": {},
+	// Customizations specific to the VS Code editor
     "customizations": {
         "vscode": {
           "extensions": [
@@ -71,17 +71,17 @@ This config will also install necessary extensions in your vscode instance to wo
             "bierner.markdown-emoji",
             "streetsidesoftware.code-spell-checker"
             ]
-            }
-    }
+        }
+    },
 
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// Option to run the container as the root user (uncomment to use)
 	// "remoteUser": "root"
 }
 ```
 
-## Lets use a post-create.sh file
+## 3. Create post-create.sh file
 
-3. I am using a simple `post-create.sh` file to have more control of the commands that I want to run after the container has started.
+I am using a simple `post-create.sh` file to have more control of the commands that I want to run after the container has started.
 
 ```bash
 #!/bin/sh
@@ -105,7 +105,7 @@ gatsby clean
 gatsby develop
 ```
 
-## Open container
+## 4. Open container
 
 Now, open your project in vscode and choose 
 
@@ -117,12 +117,18 @@ You container should start building now, first time it will take some time. Next
 
 ![Container ready](./media/container_ready.jpeg)
 
-## Browse and build
+## 5. Browse and build
 
 Your Gatsby site should now be available on `http://localhost:8000/` and reload everytime you write something in vscode.
 
-## The button
+## Extra: The button
 
-Oh, it`s also possible to add a button to you repo that automatically clone and opens everything in vscode for you
+Oh, it is also possible to add a button to you repo that automatically clone and opens everything in vscode for you
 
 [![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/amestofortytwo/blog)
+
+> NB: I do have some difficulties passing Github SSH keys to the container because im using 1Password for mye keys. Cloning and using HTTPS from Github should work better until I figure this one out. [Read more here](https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials)
+
+## Conclusion
+
+Setting up Visual Studio Code Dev Containers for a Gatsby blog is a straightforward process that can greatly benefit a team of engineers. The Dev Container offers a consistent and reliable environment for developers to work in and eliminates the need for a locally set up environment. With the steps outlined in this blog post, you can easily set up Dev Containers for your own Gatsby blog of whatever you want to develop.
