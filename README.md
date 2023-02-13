@@ -101,10 +101,6 @@ Click this and run Dev container locally. You need vscode and Docker for desktop
 
 [![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/amestofortytwo/blog)
 
-
-[![Open in Dev Containers - test](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/remiks/amestofortywo-blog/tree/live-dev-container)
-
-
 ## Update routines
 1. Delete /node_modules folder
 2. Delete package-config.js file
