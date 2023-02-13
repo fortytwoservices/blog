@@ -1,0 +1,118 @@
+---
+title: Visual Studio Code Dev Containers
+author:
+  - Remi Vandemir
+date: 2023-02-13
+categories:
+    - vscode
+    - Gatsby
+    - DevContainer
+description: To be able to serve all our engineer a simple way to update new blogpost on this blog, I wanted to try out Visual Studio Code Dev Containers. This post describe all code and how I did it for this blog.
+hero: media/DALL·E 2023-02-13 14.40.14 - a stack of containers with different colors.png
+slug: devcontainer-with-vscode
+---
+# How to setup
+
+To be able to serve all our engineer a simple way to update new blogpost on this Gatsby blog, I wanted to try out [Visual Studio Code Dev Containers]([https://](https://code.visualstudio.com/docs/devcontainers/containers) and I must say. It`s pritty nice!
+
+Our blog is built on [Gatsby](http://gatsbyjs.com) with [A theme from Pitayan](https://github.com/remiks/gatsby-theme-pitayan)
+
+## Pre prerequisites
+
+You need Docker desktop and vscode installed on your system. Follow the quick setup guide [here](https://code.visualstudio.com/docs/devcontainers/tutorial)
+
+## Create folder structure
+
+1. First create a folder named `.devcontainer` in your Gatsby root directory. 
+
+## Create devcontainer.json
+
+2. Create a new file named `devcontainer.json`
+
+This config will also install necessary extensions in your vscode instance to work better with markdown. 
+
+```sh
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
+{
+	"name": "Fortytwo Blog container",
+	
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/javascript-node:0-18",
+    "mounts": [
+		"source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+	],
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [
+		// Gatsby server
+		8000,
+		// Live reload server
+		8000
+	],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "yarn install",
+	"postCreateCommand": "sh .devcontainer/post-create.sh",
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+    "customizations": {
+        "vscode": {
+          "extensions": [
+            "yzhang.markdown-all-in-one",
+            "DavidAnson.vscode-markdownlint",
+            "bierner.markdown-emoji",
+            "streetsidesoftware.code-spell-checker"
+            ]
+            }
+    }
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
+```
+
+## Lets use a post-create.sh file
+
+3. I am using a simple `post-create.sh` file to have more control of the commands that I want to run after the container has started.
+
+```bash
+#!/bin/sh
+
+# Jump into correct folder
+cd /workspaces/amestofortywo-blog
+
+# Install Gatsby CLI
+sudo npm install -g gatsby-cli
+
+# Setup and install prereqs 
+sudo npm install
+
+# Increase node memory allocation
+export NODE_OPTIONS="--max-old-space-size=5096"
+
+# Wipe all cache node_modules and package-lock.json file
+gatsby clean
+
+# Run development instance
+gatsby develop
+```
+
+## Open container
+
+Now, open your project in vscode and choose 
+
+![Open folder in dev container](./media/open_container.jpeg)
+
+You container should start building now, first time it will take some time. Next time it will connect right away!
+
+## Browse and build
+
+Your Gatsby site should now be available on `http://localhost:8000/` and reload everytime you write something in vscode. 
