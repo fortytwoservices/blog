@@ -1,0 +1,39 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
+{
+	"name": "Fortytwo Blog container",
+	
+	// The image to use for the container, in this case a JavaScript Node environment
+	"image": "mcr.microsoft.com/devcontainers/javascript-node:0-18",
+
+	// A volume mount for the node_modules folder to persist across container restarts
+    "mounts": [
+		"source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+	],
+
+	// A list of ports to forward from the container to the host machine
+	"forwardPorts": [
+		// Port for the Gatsby server
+		8000,
+		// Port for the Live reload server
+		8000
+	],
+
+	// A command to run after the container is created
+	"postCreateCommand": "sh .devcontainer/post-create.sh",
+
+	// Customizations specific to the VS Code editor
+    "customizations": {
+        "vscode": {
+          "extensions": [
+            "yzhang.markdown-all-in-one",
+            "DavidAnson.vscode-markdownlint",
+            "bierner.markdown-emoji",
+            "streetsidesoftware.code-spell-checker"
+            ]
+        }
+    },
+
+	// Option to run the container as the root user (uncomment to use)
+	// "remoteUser": "root"
+}
