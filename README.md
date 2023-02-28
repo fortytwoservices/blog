@@ -2,26 +2,27 @@
 
 This is the repository for the [Fortytwo blog](https://blog.amestofortytwo.com).
 
-# How to contribute to blogposts
+## Run this blog locally with devcontainer in vscode
 
-Blogpost can be published here: 
+Click this and run Dev container locally. You need vscode and Docker for desktop installed on your computer.
 
-To do so, simply follow these steps:
-- Find a project you want to contribute to
-- Fork it
-- Clone it to your local system 
-- Make a new branch
-- Make your changes
-- Push it back to your repo
-- Click the Compare & pull request button
-- Click Create pull request to open a new pull request
-(Read more here: https://opensource.com/article/19/7/create-pull-request-github#:~:text=make%20some%20changes.-,TLDR,-In%20summary%2C%20if)
+[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/amestofortytwo/blog)
+
+## How to contribute to blogposts
+
+- Click the "Dev Containers Open" button above.
+- Make a new branch.
+- Make your changes.
+- Push it back to your repo.
+- Click the Compare & pull request button.
+- Click Create pull request to open a new pull request.
 
 ### Setting up a valid DCO
+
 This message will show up if you do not do it from the beginning, so let's start with it:
 
 ```
-We'd like to have valid DCO on all commits.
+We like to have valid DCO on all commits.
 
 Please fix so that you provide a sign-off on all commits:
 
@@ -35,16 +36,16 @@ Please fix so that you provide a sign-off on all commits:
 ```
 
 ## Adding a profile
+
 This is a onetime thing that you will refer to in every blog post. After you have cloned the repo. Open it in VSC and locate the folder named "authors".
 
-```
-blog/content/authors 
-```
+`blog/content/authors`
 
-Note that the ```avatars``` subfolder contains your profile picture. Add one and name it intuitive and recognizable to you and others. 
+Note that the `avatars` subfolder contains your profile picture. Add one and name it intuitive and recognizable to you and others.
 
 Next you will have to set up the profile texts which is directly inside the authors folder. Make a new file (preferrably using the same naming standard as your profilepic) and add the text as shown with your unique entries:
 
+```json
     - id: yourid
     name: Full Name
     initial: INITIALS
@@ -58,6 +59,7 @@ Next you will have to set up the profile texts which is directly inside the auth
         - [medium, "@nickname"]
         - [mailto, mailto:username@amesto.no]
         - [url, yourSite.com]
+````
 
 Note that you may delete any of the sns if you don't want to or don't have one of the entries.
 
@@ -67,7 +69,7 @@ When you are ready to start writing, you need to make a new folder with date and
 
 You need to start out the file with an initialisation on title, author etc which will be used to parse the output. This info is also linked to the avatar/profile you created earlier. Here is a template:
 
-```
+```json
 ---
 title: Your Title
 author:
@@ -92,26 +94,3 @@ Continue the post by writing regular markdown to your post.
 ### Done writing?
 
 Ready to post? Then you need to do a pull request. Look at the link from beginning of this post to find a solution.
-
-## Local runtime / test container
-
-Prerequisites:
-
-- Make, if you want to execute the commands via the Makefile
-- Docker to build and run the container
-
-```sh
-make build start
-```
-
-If you do not have Make and only wish to use Docker; you can run these commands individually.
-
-```sh
-# Build the container
-docker build -t amestofortytwo/blog --force-rm -f ./Dockerfile .
-
-# Start the container
-docker run --rm -p 80:80 amestofortytwo/blog
-```
-
-Once built and started, go to localhost in your browser.

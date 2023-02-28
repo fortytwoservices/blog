@@ -47,6 +47,12 @@ module.exports = {
         internal: false,
       },
       {
+        name: "Our culture",
+        url: "https://github.com/amestofortytwo/culture",
+        group: "home",
+        internal: false,
+      },
+      {
         name: "linkedin",
         url: "https://www.linkedin.com/company/amesto-fortytwo",
         group: "connect",
@@ -114,7 +120,7 @@ module.exports = {
                   guid: siteUrl + node.fields.slug,
                   custom_elements: [
                     {
-                      "content:encoded": node.html,
+                      "content:encoded": `<![CDATA[<p>${node.excerpt}<p>]]>`,
                     },
                     {
                       tags: node.frontmatter.categories.join(","),
@@ -129,12 +135,19 @@ module.exports = {
             query: `
               {
                 allMdx(
-                  filter: { fileAbsolutePath: { regex: "/content/posts/" } }
-                  sort: { order: DESC, fields: [frontmatter___date] }
+                  filter: {
+                    internal: {
+                      contentFilePath: { regex: "/content/posts/" }
+                    }
+                  }
+                  sort: {
+                    frontmatter: {
+                      date: DESC
+                    }
+                  }
                 ) {
                   nodes {
-                    html
-                    mdxAST
+                    excerpt
                     fields {
                       slug
                     }
@@ -153,7 +166,7 @@ module.exports = {
             `,
             output: "/rss.xml",
             match: "^/posts/",
-            title: "Amesto Fortytwo RSS Feed",
+            title: "Fortytwo RSS Feed",
           },
         ],
       },
