@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '18'
         env: 
-          NODE_OPTIONS: "--max_old_space_size=4096"
+          NODE_OPTIONS: "--max_old_space_size=8192"
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
@@ -31,7 +31,7 @@ jobs:
             ${{ runner.os }}-node-
       - run: npm ci
       - run: |
-          export NODE_OPTIONS="--max_old_space_size=4096"
+          export NODE_OPTIONS="--max_old_space_size=8192"
           npm run build
       - name: GitHub Pages action
         uses: peaceiris/actions-gh-pages@v3
