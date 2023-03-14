@@ -1,0 +1,97 @@
+---
+title: Malicious USB's - Create, hunt and mitigate
+author:
+  - Adrian Kydland Skaftun
+date: 2023-03-15
+categories:
+  - usb
+  - malicious
+  - hunt
+  - sentinel
+  - rubber-ducky
+  - arduino
+description: Protecting Your Devices - The Basics of Crafting a Malicious USB and How to Detect and Mitigate Such Attacks Using Azure Sentinel
+hero: media/dalle.png
+slug: kqlcheat
+---
+
+# Introduction
+USB drives are essential tools for storing and transferring data, but they can also be used as a weapon in a cyber attack. In this blog post, we will explore how attackers can craft a malicious USB drive and the potential consequences of such an attack. Additionally, we will discuss how you can detect and mitigate these attacks using Azure Sentinel and blocking in Microsoft 365 Defender.
+
+# What is a malicious USB?
+A malicious USB can take on a multitude of shapes - all in all to try to lure anyone into believing there is no device present or simply by making people believe they found something personal to someone else (as done in Mr. Robot), triggering something in the fined making them eager to plug it in. How come these types of devices are so popular, powerfull and easy to use? Well, to use a computer normally, we would need a keyboard to type on, or even a computer mouse to get around easily. The computer trusts such devices to be legitimate and the trust is linked towards physical access to the computer meaning that if someone has access to your computer it most likely is yourself. If it is not yourself, well, then the responsibility is on your behalf, not the computer or the device. Main giveaway in this blog entry is to - **never** plugin an untrusted device or a device you do not know where come from and sign out once you leave it.
+
+All in all, a malicious USB is a device that emulates how a keyboard act. It is typing, but without having actual keys to press. What the device is typing is programatically decided by the attacker to achieve a goal and may therefore vary.
+
+# The basics of crafting a malicious USB drive
+There are several way to get your hand on a malicious USB, the most popular is by far the Rubber Ducky by Hak5. The last few years there has been an increase in malicious cables, at least from my observations. The cable acts like a rubber ducky but looks like your normal USB charger cable. Another approach is to create one yourself using other popular microcontrollers. There are certain requirements for this to work but aiming for a Leonardo you are already there in terms of chipset that has this emulation feature.
+
+Way back when I started researching the topics of malicious USB's i made one myself that was able to be used regardless of the OS I wanted to attack. To achieve this, it had a few buttons, 3x2. Where the first row of buttons was for OS (Windows, MacOS and Linux), the next row was for filetypes to extract (text/documents, videos and pictures). Pressing a combination of OS button and filetype, files were then sent to a USB storage located in the same hub as the Arduino. 
+
+![DIY Rubber Ducky](./media/FRONTPIC FINAL.jpg)
+
+
+# Let's go hunt for one of these 
+
+Microsoft has made it easy to hunt for USBs in Sentinel using KQL. Entering into the ```DeviceEvents``` table, we get access to a lot of information ranging through most of the action types that might lead us to detecting a malicious USB device. Some of which are:
+- PnpDeviceConnected
+- PnPDeviceAllowed
+- UsbDriveMounted
+- UsbDriveUnmounted
+- UsbDriveLetterChanged
+
+But making it easier, does not equal to easy. Attackers always look for ways to hide their steps, and by changing and spoofing the USB metadata they make it harder to be detected. But this is by far the most effective way also, as this means that there is an additional step in creating such a malicious USB.
+
+I finally resorted into this approach as I tried quite a few different approaches into detecting the few scripts I was running on my device. First of all, I tried to look at the ```UsbDriveMounted``` and set a timegap between that and ```UsbDriveUnmounted``` to look for all process creations and PowerShell commands created during that connection time. But as you may think, that was ineffiecient. It yielded a result not worth my time to dig through. I tried a few variations of this before I saw that I need to filter on known or potentially malicious VIDs and PIDs. And then I found a great resource to go look for such devices based on what kinds of microchip they have. Not all microchips have the ability to emulate a keyboard - those who do, may be used in these types of attacks. Here is a draft: 
+
+```csharp
+// A great tool to add to this query: https://devicehunt.com/view/type/usb/
+let known_suspicious = dynamic(["VID_03eb", "PID_2401"  // Atmel
+                            , "VID_16D0", "PID_0753"    // Digispark
+                            , "VID_16C0", "PID_0483"    // Teensyduino
+                            , "VID_2341"                // Arduino https://devicehunt.com/view/type/usb/vendor/2341
+                            ]); 
+DeviceEvents
+| mv-expand AdditionalFields
+| where AdditionalFields["VendorIds"] has_any (known_suspicious)
+```
+
+A reasonable way to approach this kind of hunt is to look for command that has been run between the mount and unmount of a device.
+
+
+Next we will add ```DeviceProcessEvents``` to look for any processes that **might** be conneted and **might** be malicious in nature. This will not show you any parameters of any commands that has been run, but seeing either "cmd.exe", "powershell.exe" or "conhost.exe" should raise some flags as these are, as you know, the gateway to the vault!
+
+```csharp
+// A great tool to add to this query: https://devicehunt.com/view/type/usb/
+let known_suspicious = dynamic(["VID_03eb", "PID_2401"  // Atmel
+                            , "VID_16D0", "PID_0753"    // Digispark
+                            , "VID_16C0", "PID_0483"    // Teensyduino
+                            , "VID_2341"                // Arduino https://devicehunt.com/view/type/usb/vendor/2341
+                            ]); 
+DeviceEvents
+| mv-expand AdditionalFields
+| where AdditionalFields["VendorIds"] has_any (known_suspicious)
+| join kind=inner (
+    DeviceProcessEvents
+    | where ProcessCommandLine != ""
+    | extend CommandRun = TimeGenerated
+    ) on DeviceId, DeviceName
+| where CommandRun between (TimeGenerated .. 10s) // Time from plugin to action
+| where InitiatingProcessParentFileName1  has_any ("userinit.exe", "explorer.exe") // User initiated - non system actions
+| project Plugin=TimeGenerated, CommandRun, AdditionalFields, DeviceName, PossibleFileExec=FileName1, InitiatingProcessCommandLine1, InitiatingProcessParentFileName1, InitPPID=InitiatingProcessParentId1, PID=ProcessId1
+```
+
+Another approach or an addition to this approach would be to use the table ```DeviceEvents | where ActionType == "PowerShellCommand"```, but for my testing thus far the one provided on top yielded the most accurate answer as cmd and powershell were the ones I initiated through my different USBs.
+
+NB! Keep in mind that these results does not mean anything before your are done investigating their meaning. They are simply joined together on coincidence based on time from plugin of the USB to the startup of a process.
+
+Parsing some meaning into the output of this query might be cumbersome, and I've done some testing to make sure I don't post too much jibberish. Here we go:
+
+![Windows+R and typing "powershell" and then the command gives this output:](./media/screenshot_1.png)
+
+what connectors are needed?
+How do i block these?
+
+
+# Resources:
+[Jeffrey Appel - Manage device Control with Defender for Endpoint and Endpoint Manager](https://jeffreyappel.nl/manage-device-control-with-microsoft-defender-for-endpoint-and-endpoint-manager-part-1/)
