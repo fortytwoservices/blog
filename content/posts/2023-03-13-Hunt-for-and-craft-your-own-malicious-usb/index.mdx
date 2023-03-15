@@ -19,7 +19,7 @@ slug: hunting-malicious-usb
 # Introduction
 USB drives are essential tools for storing and transferring data, but they can also be used as a weapon in a cyber attack. In this blog post, we will explore a few options attackers can choose to craft a malicious USB drive and the potential consequences of such an attack. 
 
-# What is a malicious USB?
+## What is a malicious USB?
 A malicious USB is a USB that looks normal but acts bad. It is capable of typing on an emulated keyboard at the speed of light! USB devices have become an essential part of our daily lives, allowing us to transfer data quickly and easily from one device to another. However, not all USB devices are created equal. Malicious USB devices have become increasingly popular, and the consequences of plugging in an untrusted device can be severe.
 
 A malicious USB device can come in many different shapes and forms. Some are designed to look like ordinary USB drives, while others may be disguised as other devices such as keyboards, mice or books (as the title image). The goal is to lure unsuspecting victims into plugging the device into their computer or come close to an unlocked computer with a hidden USB, giving the attacker access to their system.
@@ -34,7 +34,7 @@ To protect yourself from malicious USB devices, it's important to follow a few s
 
 Secondly, make sure to sign out of your computer when you're done using it. This will help prevent unauthorized access by anyone who gains physical access to the device.
 
-# The basics of crafting a malicious USB drive
+## The basics of crafting a malicious USB drive
 
 There are several ways to get your hands on a malicious USB, the most popular is by far the Rubber Ducky by Hak5. These are commercially produced and uses a simple and easy to understand language that translates into keyboard presses. Easy to understand, easy to deploy and use.
 
@@ -50,7 +50,7 @@ Way back when I started researching the topics of malicious USB's I made one mys
 And here are a few of the different devices in my collection, for your reference.
 ![These devices may take on any shape to get through security and to act normal!](./media/20230315_115058.jpg)
 
-# Let's go hunting
+## Let's go hunting
 
 Microsoft has made it easy to hunt for USBs in Sentinel using KQL. Entering into the ```DeviceEvents``` table, we get access to a lot of information ranging through most of the action types that might lead us to detecting a malicious USB device. Some of which are:
 - PnpDeviceConnected
