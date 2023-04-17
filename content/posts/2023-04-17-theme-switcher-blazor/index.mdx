@@ -1,0 +1,213 @@
+---
+title: Microsoft Blazor app ThemeSwitcher
+author:
+  - Remi Vandemir
+date: 2023-04-17
+categories:
+    - Blazor
+    - .NET
+description: When working on my Blazor portal project, I realized that I needed a way to easily switch between light and dark themes, and to make sure that the user's selection persisted even after a page refresh. To accomplish this, I decided to create a service class that could handle theme switching and storage.
+hero: media/blazor.png
+slug: blazor-theme-switcher
+---
+
+## Short tutorial for Blazor ThemeSwitcher 
+
+When developing the portal, I quickly realized that I needed to have an easy way to switch between light and dark Material CSS themes, and I wanted the selected theme to persist even after the user refreshed the page. To accomplish this, I decided to create a service class in Blazor that could handle these tasks.
+
+The class includes methods to initialize the theme based on the user's previous selection stored in local storage, as well as to toggle between light and dark themes and save the selection to local storage. Additionally, the class defines a custom event that can be used to notify the UI when the theme has been changed.
+
+I found that this approach helped me to keep the theme switching functionality organized and centralized in one place, rather than having to repeat the same logic across multiple components. Plus, the use of local storage made it easy to ensure that the user's theme selection persisted even after they left and returned to the portal.
+
+Overall, I'm quite happy with how this service class turned out and I'm sure it will be useful in other Blazor projects that require theme switching functionality.
+
+## Add Css and js to _Host.cshtml file
+
+First you need to add the following to your `_Host.cshtml` file.
+
+1. Add this in inside `<head>`.
+
+```html
+<link id="theme" href="css/material.css" rel="stylesheet" />
+```
+
+2. and this just above the closing `</body>` tag.
+This make sure we change the whole path to selected css file. I have two files: `.css/material.css` and `.css/materialdark.css`
+
+```js
+<script>
+        function setTheme() {
+            document.getElementsByTagName('body')[0].style.display = 'none';
+            var theme = localStorage.getItem('ThemeInUse') === 'materialdark' ? 'materialdark' : 'material';
+            let synclink = document.getElementById('theme');
+            synclink.href = 'css/' + theme + '.css';
+            setTimeout(function () { document.getElementsByTagName('body')[0].style.display = 'block'; }, 200);
+        }
+        setTheme();
+    </script>
+````
+
+## Create a new class ThemeService.cs and add to Program.cs
+
+1. Add a new file names `ThemeService.cs` and fill in the following code. (I got some help from ChatGPT to make comments inline).
+
+```C
+using Blazored.LocalStorage;
+using Microsoft.JSInterop;
+using Microsoft.AspNetCore.Components;
+
+public class ThemeService
+{
+    private ILocalStorageService _localStorage;
+    private IJSRuntime _jsRuntime;
+
+    // The name of the theme currently in use
+    public string ThemeName;
+
+    // The state of whether the dark mode is enabled or not
+    public bool isDarkMode = false;
+
+    // Event that is triggered when the theme changes
+    public event Action OnThemeChanged;
+
+    public ThemeService(ILocalStorageService localStorage, IJSRuntime jSRuntime)
+    {
+        _localStorage = localStorage;
+        _jsRuntime = jSRuntime;
+    }
+
+    // Details of the current theme
+    public ThemeDetails CurrentTheme { get; set; } = new ThemeDetails();
+
+    // List of all available themes, along with their details
+    public List<ThemeDetails> Themes = new List<ThemeDetails>() {
+        new ThemeDetails(){ ID = "material", Text = "Material", SyncfusionTheme = Theme.Material, ThemeSelectedBackground = "#ffffff" },
+        new ThemeDetails(){ ID = "materialdark", Text = "Material Dark", SyncfusionTheme = Theme.MaterialDark, ThemeSelectedBackground = "#242424" }
+    };
+
+    // Details of a theme
+    public class ThemeDetails
+    {
+        // The unique identifier of the theme
+        public string ID { get; set; }
+
+        // The display name of the theme
+        public string Text { get; set; }
+
+        // The Syncfusion theme associated with the theme
+        public Theme SyncfusionTheme { get; set; }
+
+        // The background color associated with the theme
+        public string ThemeSelectedBackground { get; set; }
+    }
+
+    // Initializes the theme service and fetches the theme from the local storage, if available
+    public async Task Initialize()
+    {
+        await FetchThemeOrDefaultFromLocalStorage();
+        ThemeName = CurrentTheme.ID;
+
+        // Set the isDarkMode flag based on the value in local storage
+        isDarkMode = (await _localStorage.GetItemAsStringAsync(ISDARK)) == "true";
+    }
+
+    // Toggles the current theme between dark and light mode
+    public async Task ToggleTheme(ChangeEventArgs e)
+    {
+        // Update the isDarkMode flag based on the new value of the checkbox
+        isDarkMode = (bool)e.Value;
+
+        // Determine the ID of the theme based on whether the dark mode is enabled or not
+        var themeId = isDarkMode ? "materialdark" : "material";
+
+        // Set the current theme based on the theme ID
+        CurrentTheme = Themes.Single(t => t.ID == themeId);
+        ThemeName = CurrentTheme.ID;
+
+        // Store the theme and isDarkMode flags in local storage
+        StoreThemeInLocalStorage();
+
+        // Delay the execution for a short time to avoid any timing issues
+        await Task.Delay(100);
+
+        // Trigger the OnThemeChanged event
+        OnThemeChanged?.Invoke();
+
+        // Update the theme using JavaScript interop
+        await _jsRuntime.InvokeVoidAsync("setTheme", themeId);
+    }
+
+    // Fetches the theme from the local storage, or sets the default theme if not available
+    private async Task FetchThemeOrDefaultFromLocalStorage()
+    {
+        if (await _localStorage.ContainKeyAsync(THEMEKEY))
+        {
+            // If the theme key exists in local storage, fetch the theme and isDarkMode flag
+            var themeID = await _localStorage.GetItemAsStringAsync(THEMEKEY);
+            var isDarkModeString = await _localStorage.GetItemAsStringAsync(ISDARK);
+
+            // Set isDark
+```
+
+2. Now, add `builder.Services.AddScoped<ThemeService>();` to `Program.cs`
+
+## Next, we`ll head over to MainLayout.razor
+
+1. First, lets `@inject ThemeService themeService` at the top.
+2. Add a switch/checkbox or whatever you want to use. Im using [SyncFusion](https://www.syncfusion.com/blazor-components) for visuals
+
+```html
+    <span>Light Mode</span>
+    <SfSwitch @bind-Checked="themeService.isDarkMode"
+        @onchange="@((args) => themeService.ToggleTheme(args))"></SfSwitch>
+```
+
+3. Add the following code to the bottom of MainLayout.razor
+
+```C
+@code {
+    // Method that is called when the component is initialized
+    protected override async Task OnInitializedAsync()
+    {
+        // Subscribes to the 'OnThemeChanged' event in the 'themeService' instance and
+        // assigns the 'HandleThemeChanged' method to handle the event
+        themeService.OnThemeChanged += HandleThemeChanged;
+
+        // Calls the base 'OnInitializedAsync' method
+        await base.OnInitializedAsync();
+    }
+
+    // Method that is called when the theme is changed
+    private async void HandleThemeChanged()
+    {
+        // Adds a small delay to allow the theme to change before updating the state
+        await Task.Delay(300);
+
+        // Calls the 'StateHasChanged' method to update the component's state
+        StateHasChanged();
+    }
+
+    // Method that is called when the component is disposed
+    public void Dispose()
+    {
+        // Unsubscribes from the 'OnThemeChanged' event in the 'themeService' instance
+        themeService.OnThemeChanged -= HandleThemeChanged;
+    }
+
+    // Method that is called after the component has been rendered
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // If this is the first time the component has been rendered
+        if (firstRender)
+        {
+            // Initializes the 'themeService' instance and waits for it to complete
+            await themeService.Initialize();
+
+            // Calls the 'StateHasChanged' method to update the component's state
+            StateHasChanged();
+        }
+    }
+}
+```
+
+Hope it helps! Good luck!
