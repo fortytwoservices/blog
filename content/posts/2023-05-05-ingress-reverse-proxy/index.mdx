@@ -1,0 +1,117 @@
+---
+title: Simplifying Reverse Proxy Management for external services with Kubernetes Ingress Controller
+author:
+  - Marius Antonsen
+date: 2023-05-05
+categories:
+    - Kubernetes
+    - Docker
+description: Can you actually use the ingress-controller as a reverse proxy for your external services and can you get ssl for a service outside kubernetes as simply as inside?
+hero: media/proxyrobot.jpeg
+slug: ingess-reverse-proxy
+---
+
+
+## Introduction
+
+While discussing reverse proxies with a colleague who was building out his home lab with Docker, the topic of SSL certificates and proxies came up. I mentioned that I use Kubernetes, cert-manager, and Let's Encrypt to manage these components. However, this made me consider the fact that although most of my services are hosted within Kubernetes, there are still some that run on other platforms, including bare-metal.
+
+As a result, I began to wonder if I should configure NGINX Proxy Manager or Traefik on Docker to manage certificates for these external services. Alternatively, could it be possible to leverage Kubernetes' internal resource management capabilities for external resources as well?
+
+The short answer is "You bet!" Let's explore how we can accomplish this.
+
+
+
+## Components
+
+To get this up and running, you will need a Kubernetes cluster with a working Ingress Controller and Cert-Manager installed.
+
+A reverse proxy typically requires three manifests: Endpoint, Service, and Ingress. These manifests define the endpoints and services to be exposed by the Ingress Controller and the rules for routing traffic to them.
+
+An Endpoint manifest defines the IP address and port of an external service. A Service manifest exposes the endpoint as a Kubernetes Service object, which can then be used by the Ingress Controller to route traffic to the endpoint.
+
+Finally, an Ingress manifest defines the rules for routing traffic to the Service objects. It specifies the hostname, path, and other criteria for routing traffic to the appropriate Service object.
+
+Below are example manifests for each of these components. Note that these are not intended to be copy-pasted directly, but rather serve as a starting point for building your own manifests that are specific to your environment and requirements.
+
+### Endpoint
+
+An endpoint is the network address of a pod that provides a specific service in the cluster. like a phone number that connects you to a specific person. Endpoints are dynamically created by Kubernetes based on the state of the pods in the cluster and they represent the availability of a particular service. When a service is created, it is associated with one or more endpoints. These endpoints are then used to direct traffic to the appropriate pod that is providing the service. In summary, an endpoint is a reference to a specific pod that is providing a service, and it's used by Kubernetes to route traffic to the correct location.
+
+```yaml
+
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: my-external-service
+subsets:
+  - addresses:
+      - ip: 10.1.2.3
+    ports:
+      - port: 80
+
+```
+
+### Service
+
+In Kubernetes, a service is like a virtual front door that allows communication between different parts of a software application running on a cluster. Think of it like a receptionist who directs visitors to the right person or department. The service has a name and a fixed IP address that can be used by other parts of the application to communicate with it. It also helps to ensure that communication between different parts of the application is reliable and efficient, even if the underlying physical components change over time. In short, a Kubernetes service is an important tool for making sure that different parts of a software application can talk to each other effectively and without interruptions.
+
+```yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-external-service
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: my-external-app
+
+```
+
+### Ingress
+
+An Ingress manifest in Kubernetes is a configuration file that tells the cluster how to handle incoming internet traffic. It's like a map that tells the cluster which web addresses and web pages to show to people who visit the website. It's used to control how traffic flows into and out of the cluster, making it possible to manage multiple services and web pages from a single point of entry. It's a way to make sure that the right web pages are shown to the right people, and it makes it possible to add things like security features and load balancing to the website.
+
+```yaml
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+    - hosts:
+        - my.domain.com
+      secretName: my-tls-secret
+  rules:
+    - host: my.domain.com
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: my-external-service
+                port:
+                  name: http
+
+
+```
+
+## Summary
+
+In Kubernetes, an Ingress Controller is like a traffic cop at the entrance of a cluster. It controls incoming traffic and directs it to the appropriate services. When a request comes in from outside the cluster, the Ingress Controller uses information from the Ingress Manifest to determine how to route the traffic. The Ingress Manifest specifies the hostnames, paths, and ports that should be exposed, as well as the routing rules for directing traffic to the appropriate services.
+
+To route traffic to external services, the Ingress Controller uses Endpoints and Services. An Endpoint is the network address of a pod that provides a specific service in the cluster. A Service is a logical entity that groups together a set of pods and provides a stable IP address and DNS name that other pods can use to access the service.
+
+To connect to an external service, the Ingress Controller first creates a Service that points to the external service. The Service has a stable IP address that other pods can use to connect to the external service. Next, the Ingress Controller creates an Endpoint that maps the Service to the actual IP address and port of the external service. The Ingress Controller then uses this Endpoint to route traffic to the external service.
+
+If you combine Cert-Manager with the Ingress Controller you can secure external traffic by automating the management and issuance of SSL certificates. The Ingress Manifest specifies the TLS configuration and Cert-Manager generates SSL certificates, stores them as Kubernetes Secrets, and the Ingress Controller uses them to terminate SSL connections and route traffic to the correct location within the Kubernetes cluster.
+
+
+Please note that this post is a copy of the original article published on my blog at https://blog.antnsn.dev/2023-p2-ingress-as-a-reverse-proxy/. Check out my website for more content related to Cloud native, terraform and kubernetes.
