@@ -12,7 +12,7 @@ slug: ingess-reverse-proxy
 ---
 
 
-# Introduction
+## Introduction
 
 While discussing reverse proxies with a colleague who was building out his home lab with Docker, the topic of SSL certificates and proxies came up. I mentioned that I use Kubernetes, cert-manager, and Let's Encrypt to manage these components. However, this made me consider the fact that although most of my services are hosted within Kubernetes, there are still some that run on other platforms, including bare-metal.
 
@@ -22,7 +22,7 @@ The short answer is "You bet!" Let's explore how we can accomplish this.
 
 
 
-# Components
+## Components
 
 To get this up and running, you will need a Kubernetes cluster with a working Ingress Controller and Cert-Manager installed.
 
@@ -34,7 +34,7 @@ Finally, an Ingress manifest defines the rules for routing traffic to the Servic
 
 Below are example manifests for each of these components. Note that these are not intended to be copy-pasted directly, but rather serve as a starting point for building your own manifests that are specific to your environment and requirements.
 
-## Endpoint
+### Endpoint
 
 An endpoint is the network address of a pod that provides a specific service in the cluster. like a phone number that connects you to a specific person. Endpoints are dynamically created by Kubernetes based on the state of the pods in the cluster and they represent the availability of a particular service. When a service is created, it is associated with one or more endpoints. These endpoints are then used to direct traffic to the appropriate pod that is providing the service. In summary, an endpoint is a reference to a specific pod that is providing a service, and it's used by Kubernetes to route traffic to the correct location.
 
@@ -52,7 +52,7 @@ subsets:
 
 ```
 
-## Service
+### Service
 
 In Kubernetes, a service is like a virtual front door that allows communication between different parts of a software application running on a cluster. Think of it like a receptionist who directs visitors to the right person or department. The service has a name and a fixed IP address that can be used by other parts of the application to communicate with it. It also helps to ensure that communication between different parts of the application is reliable and efficient, even if the underlying physical components change over time. In short, a Kubernetes service is an important tool for making sure that different parts of a software application can talk to each other effectively and without interruptions.
 
@@ -71,7 +71,7 @@ spec:
 
 ```
 
-## Ingress
+### Ingress
 
 An Ingress manifest in Kubernetes is a configuration file that tells the cluster how to handle incoming internet traffic. It's like a map that tells the cluster which web addresses and web pages to show to people who visit the website. It's used to control how traffic flows into and out of the cluster, making it possible to manage multiple services and web pages from a single point of entry. It's a way to make sure that the right web pages are shown to the right people, and it makes it possible to add things like security features and load balancing to the website.
 
@@ -103,7 +103,7 @@ spec:
 
 ```
 
-# Summary
+## Summary
 
 In Kubernetes, an Ingress Controller is like a traffic cop at the entrance of a cluster. It controls incoming traffic and directs it to the appropriate services. When a request comes in from outside the cluster, the Ingress Controller uses information from the Ingress Manifest to determine how to route the traffic. The Ingress Manifest specifies the hostnames, paths, and ports that should be exposed, as well as the routing rules for directing traffic to the appropriate services.
 
