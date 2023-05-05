@@ -1,0 +1,13 @@
+- id: mariusantonsen
+  name: Marius Antonsen
+  initial: MA
+  bio: |
+    Cloud Engineer, Amesto Fortytwo - Kubernetes fan and Open Source enthusiast
+  joined: Mai 2023
+  avatar: ./avatars/antonsen.png
+  sns:
+    - [linkedin, https://www.linkedin.com/in/antnsn/]
+    - [github, https://github.com/antnsn]
+    - [twitter, antnsntweets]
+    - [mailto, mailto:marius.antonsen@amesto.no]
+    - [url, https://blog.antnsn.dev]
