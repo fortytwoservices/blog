@@ -7,7 +7,9 @@
     "build": "gatsby build --prefix-paths",
     "develop": "gatsby develop",
     "serve": "gatsby serve",
-    "clean": "gatsby clean"
+    "clean": "gatsby clean",
+    "pw:test": "npx playwright test",
+    "test:e2e": "start-server-and-test serve http://localhost:9000 pw:test"
   },
   "dependencies": {
     "@raae/gatsby-remark-oembed": "^0.3.2",
@@ -18,12 +20,14 @@
   },
   "devDependencies": {
     "@pitayan/gatsby-theme-pitayan": "^0.5.1",
+    "@playwright/test": "^1.35.1",
     "gatsby": "^5.6.0",
     "postcss": "^8.4.20",
     "postcss-import": "^15.1.0",
     "postcss-nested": "^6.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "start-server-and-test": "^2.0.0",
     "tailwindcss": "^3.2.4"
   }
 }
