@@ -6,9 +6,9 @@ module.exports = {
   siteMetadata: {
     title: `Amesto Fortytwo Blog`,
     name: `Fortytwo`,
-    description:"The answer is meaningsless - unless you understand the question.",
+    description:"The answer is meaningless - unless you understand the question.",
     siteUrl: `https://blog.amestofortytwo.com`,
-    siteSlogan: `The answer is meaningsless - unless you understand the question.`,
+    siteSlogan: `The answer is meaningless - unless you understand the question.`,
     siteLinks: [
       {
         name: "sitemap",
