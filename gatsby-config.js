@@ -197,5 +197,11 @@ module.exports = {
         domain: `blog.amestofortytwo.com`,
       },
     },
+    {
+      resolve: 'gatsby-plugin-manifest',
+      options: {
+        icon: 'src/assets/42_favicon_512.png',
+      },
+    },
   ],
 }
