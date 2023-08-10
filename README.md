@@ -17,6 +17,10 @@ Click this and run Dev container locally. You need vscode and Docker for desktop
 - Click the Compare & pull request button.
 - Click Create pull request to open a new pull request.
 
+### NB! Be mindful of media image sizes
+
+Pre-optimize the media images used somewhat, as too large images strains the build process both for time and memory needs. Might be sensible to keep the width and/or height below 2000 pixels.
+
 ### Setting up a valid DCO
 
 This message will show up if you do not do it from the beginning, so let's start with it:
