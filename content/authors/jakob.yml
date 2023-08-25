@@ -1,0 +1,9 @@
+- id: jakobdigranes
+  name: Jakob Digranes
+  initial: JD
+  bio: |
+    Principal Cloud Engineer, Amesto Fortytwo
+  joined: September 2022
+  avatar: ./avatars/jakob.png
+  sns:
+    - [linkedin, https://www.linkedin.com/in/jakobdigranes/]
