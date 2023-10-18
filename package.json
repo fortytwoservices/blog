@@ -22,7 +22,7 @@
   "devDependencies": {
     "@pitayan/gatsby-theme-pitayan": "^0.5.2",
     "@playwright/test": "^1.39.0",
-    "gatsby": "^5.12.6",
+    "gatsby": "^5.12.7",
     "postcss": "^8.4.31",
     "postcss-import": "^15.1.0",
     "postcss-nested": "^6.0.1",
