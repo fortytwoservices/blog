@@ -24,7 +24,7 @@
     "@playwright/test": "^1.40.1",
     "gatsby": "^5.13.1",
     "postcss": "^8.4.32",
-    "postcss-import": "^15.1.0",
+    "postcss-import": "^16.0.0",
     "postcss-nested": "^6.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
