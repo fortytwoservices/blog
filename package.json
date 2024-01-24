@@ -14,21 +14,21 @@
   "dependencies": {
     "@raae/gatsby-remark-oembed": "^0.3.3",
     "gatsby-plugin-feed": "^5.13.0",
-    "gatsby-plugin-manifest": "^5.13.0",
+    "gatsby-plugin-manifest": "^5.13.1",
     "gatsby-plugin-plausible": "^0.0.7",
-    "gatsby-plugin-sitemap": "^6.13.0",
+    "gatsby-plugin-sitemap": "^6.13.1",
     "gatsby-remark-responsive-iframe": "^6.13.0"
   },
   "devDependencies": {
     "@pitayan/gatsby-theme-pitayan": "^0.5.2",
-    "@playwright/test": "^1.40.1",
-    "gatsby": "^5.13.1",
-    "postcss": "^8.4.32",
-    "postcss-import": "^15.1.0",
+    "@playwright/test": "^1.41.1",
+    "gatsby": "^5.13.2",
+    "postcss": "^8.4.33",
+    "postcss-import": "^16.0.0",
     "postcss-nested": "^6.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "start-server-and-test": "^2.0.3",
-    "tailwindcss": "^3.4.0"
+    "tailwindcss": "^3.4.1"
   }
 }
