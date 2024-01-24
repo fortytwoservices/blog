@@ -14,7 +14,7 @@
   "dependencies": {
     "@raae/gatsby-remark-oembed": "^0.3.3",
     "gatsby-plugin-feed": "^5.13.0",
-    "gatsby-plugin-manifest": "^5.13.0",
+    "gatsby-plugin-manifest": "^5.13.1",
     "gatsby-plugin-plausible": "^0.0.7",
     "gatsby-plugin-sitemap": "^6.13.0",
     "gatsby-remark-responsive-iframe": "^6.13.0"
